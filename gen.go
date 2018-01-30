@@ -6,6 +6,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/atotto/clipboard"
+
 	"github.com/spf13/cobra"
 )
 
@@ -37,9 +39,20 @@ func guid(cmd *cobra.Command, args []string) {
 		fmt.Println("Error: ", err)
 		return
 	}
-	fmt.Printf("%x-%x-%x-%x-%x\n", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+
+	out := fmt.Sprintf("%x-%x-%x-%x-%x\n", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+	fmt.Println(out)
+
+	if err := clipboard.WriteAll(out); err != nil {
+		log.Fatalf("error copying to clipboard: %v", err)
+	}
 }
 
 func date(cmd *cobra.Command, args []string) {
-	fmt.Println(time.Now().UTC().Format(time.RFC3339Nano))
+	out := time.Now().UTC().Format(time.RFC3339Nano)
+	fmt.Println(out)
+
+	if err := clipboard.WriteAll(out); err != nil {
+		log.Fatalf("error copying to clipboard: %v", err)
+	}
 }
